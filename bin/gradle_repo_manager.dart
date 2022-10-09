@@ -2,6 +2,6 @@ import 'package:gradle_repo_manager/gradle_repo_manager.dart' as gradle_repo_man
 
 const newMev = "maven { url 'https://gradle.iranrepo.ir' }";
 void main(List<String> arguments) async {
-  final newRepo = arguments.isNotEmpty ? arguments.first : newMev;
+  final newRepo = arguments.isNotEmpty ? arguments.join(' ') : newMev;
   await gradle_repo_manager.scanAndChangeRepos(newRepo);
 }
