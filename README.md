@@ -1,2 +1,8 @@
-A sample command-line application with an entrypoint in `bin/`, library code
-in `lib/`, and example unit test in `test/`.
+# gradle_repo_manager
+
+a simple command line tool to add a repository to all gradle files under working directory
+by default will add
+
+```gradle
+maven { url 'https://gradle.iranrepo.ir' }
+```
