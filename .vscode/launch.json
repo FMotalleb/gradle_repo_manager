@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "repo_manager",
+            "name": "gradle_repo_manager",
             "request": "launch",
             "type": "dart",
-            "program": "bin/repo_manager.dart",
+            "program": "bin/gradle_repo_manager.dart",
             "args": [
                 "test.gradle"
             ]
