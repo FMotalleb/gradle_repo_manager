@@ -1,8 +1,10 @@
 # gradle_repo_manager
 
-## ALERT
+## ALERT Since version 2.0.0
 
 **content of this file are deprecated by version(2.0.0) use `--help (-h)` flag with cli**
+
+## For version 1.0.0
 
 a simple command line tool to add a repository to all gradle files under working directory
 by default will add
