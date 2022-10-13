@@ -1,8 +1,8 @@
 # gradle_repo_manager
 
-## ALERT Since version 2.0.0
+## Since version 2.0.0 and higher
 
-**content of this file are deprecated by version(2.0.0) use `--help (-h)` flag with cli**
+**use `--help (-h)` to see help message of cli**
 
 ## For version 1.0.0
 
