@@ -10,7 +10,7 @@
             "type": "dart",
             "program": "bin/gradle_repo_manager.dart",
             "args": [
-                "test.gradle"
+                "-v",
             ]
         }
     ]

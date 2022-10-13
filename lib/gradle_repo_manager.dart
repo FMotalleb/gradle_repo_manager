@@ -1,18 +1,44 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:path/path.dart' as path;
 
-Future<void> scanAndChangeRepos(String repoText) async {
-  await for (final i in scanForFiles(
-    root: Directory.current,
-    namePattern: RegExp(r'\.gradle$'),
-  )) {
-    await setRepo(i, repoText);
+Future<void> scanAndChangeRepos({
+  required String repoPath,
+  required String workingDirectory,
+  required bool isVerbose,
+}) async {
+  final workingDir = Directory(workingDirectory);
+  final scannerRegex = RegExp(r'\.gradle$');
+  if (isVerbose) {
+    print('working dir: ${workingDir.absolute.path}');
+    print('repo: $repoPath');
   }
+  final startTime = DateTime.now().millisecondsSinceEpoch;
+  int totalCounter = 0;
+  int doneCount = 0;
+  await for (final i in scanForFiles(
+    root: workingDir,
+    isVerbose: isVerbose,
+    namePattern: scannerRegex,
+  )) {
+    totalCounter++;
+    final result = await setRepo(
+      sourceFile: i,
+      repoAddress: repoPath,
+      isVerbose: isVerbose,
+    );
+    doneCount += result ? 1 : 0;
+  }
+  final endTime = DateTime.now().millisecondsSinceEpoch;
+  final totalDur = endTime - startTime;
+
+  print('scanned `$totalCounter` files, added repo to `$doneCount` files, in ${totalDur}ms');
 }
 
 Stream<File> scanForFiles({
   required Directory root,
   required Pattern namePattern,
+  required bool isVerbose,
 }) async* {
   yield* root.list(recursive: true).where(
     (event) {
@@ -25,7 +51,7 @@ Stream<File> scanForFiles({
   ).map<File>(
     (event) {
       if (event is File) {
-        print('found ${event.path}');
+        if (isVerbose) print('found ${event.path}');
         return event;
       }
       throw Exception('event is not a file actually its impossible');
@@ -33,18 +59,26 @@ Stream<File> scanForFiles({
   );
 }
 
-Future<void> setRepo(File sourceFile, String repoAddress) async {
+Future<bool> setRepo({
+  required File sourceFile,
+  required String repoAddress,
+  required bool isVerbose,
+}) async {
+  final repo = 'maven { url \'$repoAddress\' }';
   final oldValue = sourceFile.readAsStringSync();
   final repoStartingPoint = RegExp(r'repositories\s*{');
   if (!oldValue.contains(repoStartingPoint)) {
-    print('cannot find any repository entry in `${sourceFile.path}` <it isn\'t an error>');
+    if (isVerbose) print('cannot find any repository entry in `${sourceFile.path}` <it isn\'t an error>');
+    return false;
   } else if (oldValue.contains(repoAddress)) {
-    print('repo already existed in `${sourceFile.path}`');
+    if (isVerbose) print('repo already existed in `${sourceFile.path}`');
+    return false;
   } else {
     final newVal = oldValue.replaceAll(repoStartingPoint, '''
 repositories { 
-$repoAddress''');
+$repo''');
     sourceFile.writeAsStringSync(newVal);
-    print('repo added to `${sourceFile.path}`');
+    if (isVerbose) print('repo added to `${sourceFile.path}`');
+    return true;
   }
 }

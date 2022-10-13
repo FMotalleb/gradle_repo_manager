@@ -1,5 +1,9 @@
 # gradle_repo_manager
 
+## ALERT
+
+**content of this file are deprecated by version(2.0.0) use `--help (-h)` flag with cli**
+
 a simple command line tool to add a repository to all gradle files under working directory
 by default will add
 
@@ -11,7 +15,7 @@ if you want to use other repos use
 
 ```bash
 gradle_repo_manager <repo line i.e.: maven {url 'https://gradle.iranrepo.ir' } >
-gradle_repo_manager  maven {url 'https://gradle.iranrepo.ir' }
+gradle_repo_manager --repo--address  https://gradle.iranrepo.ir
 ```
 
 without any thing around it
