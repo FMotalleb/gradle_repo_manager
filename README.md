@@ -56,7 +56,6 @@ if you want to use other repos use
 
 ```bash
 repo <repo line i.e.: maven {url 'https://gradle.iranrepo.ir' } >
-repo --repo-address  https://gradle.iranrepo.ir
 ```
 
 without any thing around it
