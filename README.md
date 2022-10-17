@@ -61,7 +61,7 @@ repo <repo line i.e.: maven {url 'https://gradle.iranrepo.ir' } >
 without any thing around it
 
 ## TODO
-
+- [ ] manae ~/.gradle/init.gradle file
 - [ ] remove a repository entry
 - [ ] change a repository to another one
 - [ ] change default pattern of maven repository
