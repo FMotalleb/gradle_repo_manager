@@ -16,7 +16,7 @@ builds would fail due to limitations applied
 just use
 
 ```bash
->dart pub global activate gradle_repo_manager
+dart pub global activate gradle_repo_manager
 ```
 
 and cli will be installed on your device
