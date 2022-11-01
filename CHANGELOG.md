@@ -4,7 +4,7 @@
 
 ## 2.0.0
 
-- arguments rework
+- (feat) supports arguments for changing working directory and repo address
 
 ## 1.0.0
 

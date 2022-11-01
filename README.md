@@ -11,6 +11,23 @@ builds would fail due to limitations applied
 2. find repository entry in the file (some of files does not include one)
 3. add a custom repository at start of the repositories list
 
+## Installing
+
+just use
+
+```bash
+dart pub global activate gradle_repo_manager
+```
+
+and cli will be installed on your device
+then use
+
+```bash
+repo --help
+```
+
+to see more instructions
+
 ## Building
 
 ### in linux
