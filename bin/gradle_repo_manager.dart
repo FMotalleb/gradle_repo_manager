@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:gradle_repo_manager/gradle_repo_manager.dart' as gradle_repo_manager;
+import 'package:gradle_repo_manager/gradle_utils.dart';
 
 void main(List<String> arguments) async {
   ArgResults? params;
@@ -19,11 +20,13 @@ void main(List<String> arguments) async {
     print(_argParser.usage);
     exit(0);
   }
-
+  if (params['gradle-cache'] == true) {
+    unlinkGradleCaches(isVerbose: params['verbose'] == true);
+  }
   await gradle_repo_manager.scanAndChangeRepos(
     repoPath: params['repo-address'],
     workingDirectory: params['working-directory'],
-    isVerbose: params['verbose'],
+    isVerbose: params['verbose'] == true,
   );
 }
 
@@ -77,5 +80,12 @@ ArgParser get _argParser {
       },
       defaultsTo: 'https://gradle.iranrepo.ir',
       help: 'new repository address to add to all sub gradle dirs',
+    )
+    ..addFlag(
+      'gradle-cache',
+      abbr: 'c',
+      defaultsTo: false,
+      negatable: false,
+      help: 'removes gradle cache directory from',
     );
 }
