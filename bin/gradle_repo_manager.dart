@@ -87,6 +87,6 @@ ArgParser get _argParser {
       abbr: 'c',
       defaultsTo: false,
       negatable: false,
-      help: 'removes gradle cache directory from',
+      help: 'removes gradle cache directory',
     );
 }
