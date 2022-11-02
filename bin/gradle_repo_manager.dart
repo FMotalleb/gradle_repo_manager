@@ -6,6 +6,7 @@ import 'package:gradle_repo_manager/gradle_utils.dart';
 
 void main(List<String> arguments) async {
   ArgResults? params;
+
   try {
     params = _argParser.parse(arguments);
   } catch (e) {

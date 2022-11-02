@@ -1,3 +1,7 @@
+## 2.0.2
+
+- (Fix) fixed gradle caches remove method for linux
+
 ## 2.0.1
 
 - (Feat) remove gradle caches using (--gradle-cache || -c)

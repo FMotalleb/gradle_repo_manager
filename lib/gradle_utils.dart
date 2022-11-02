@@ -10,7 +10,7 @@ Future<void> unlinkGradleCaches({required bool isVerbose}) async {
       final usersDir = Platform.environment['USERPROFILE'];
       if (usersDir == null) {
         throw Exception('''
-cannot find user dir in your environment.
+cannot find user directory in your environment.
 you may solve this issue by setting `USERPROFILE` to `C:/users/<Your Username>`
 in environment variables.
 ''');
@@ -18,7 +18,17 @@ in environment variables.
       cachesLocation = join(usersDir, '.gradle/caches');
       break;
     case 'linux':
-      cachesLocation = join('~', '.gradle/caches');
+      final usersDir = Platform.environment['HOME'];
+      if (usersDir == null) {
+        throw Exception('''
+cannot find user directory in your environment.
+you may solve this issue by setting `HOME` to `/home/<Your Username>`
+in environment variables.
+or for this run use 
+export HOME=/home/<Your Username>
+''');
+      }
+      cachesLocation = join(usersDir, '.gradle/caches');
       break;
     default:
       throw UnimplementedError('removing caches of gradle is not supported in your os ($os)');
