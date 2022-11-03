@@ -1,3 +1,12 @@
+## 2.0.3
+
+- (Feat) now can detect flutter sdk path
+and update gradle files with (--pub-packages || -p)
+
+## 2.0.2
+
+- (Fix) fixed gradle caches remove method for linux
+
 ## 2.0.1
 
 - (Feat) remove gradle caches using (--gradle-cache || -c)
