@@ -6,12 +6,16 @@ Future<void> applyToFlutter({
   required String repoPath,
   required bool isVerbose,
 }) async {
-  final sdkDir = await _getInstallationPath();
-  return scanAndChangeRepos(
-    isVerbose: isVerbose,
-    repoPath: repoPath,
-    workingDirectory: sdkDir.absolute.path,
-  );
+  try {
+    final sdkDir = await _getInstallationPath();
+    return scanAndChangeRepos(
+      isVerbose: isVerbose,
+      repoPath: repoPath,
+      workingDirectory: sdkDir.absolute.path,
+    );
+  } on Exception catch (e) {
+    print(e);
+  }
 }
 
 Future<Directory> _getInstallationPath() async {

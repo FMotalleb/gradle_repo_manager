@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:args/args.dart';
 import 'package:gradle_repo_manager/flutter_utils.dart' as flutter_utils;
 import 'package:gradle_repo_manager/gradle_repo_manager.dart' //
@@ -20,6 +19,7 @@ Future<void> main(List<String> arguments) async {
     exit(1);
   }
   if (params['help'] == true) {
+    print('gradle_repo_manager v2.0.3');
     print(_argParser.usage);
     exit(0);
   }
