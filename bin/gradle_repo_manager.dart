@@ -19,7 +19,6 @@ Future<void> main(List<String> arguments) async {
     exit(1);
   }
   if (params['help'] == true) {
-    print('gradle_repo_manager v2.0.3');
     print(_argParser.usage);
     exit(0);
   }
