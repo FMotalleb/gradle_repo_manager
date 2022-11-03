@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
+import 'package:gradle_repo_manager/flutter_utils.dart' as flutter_utils;
 import 'package:gradle_repo_manager/gradle_repo_manager.dart' as gradle_repo_manager;
-import 'package:gradle_repo_manager/gradle_utils.dart';
+import 'package:gradle_repo_manager/gradle_utils.dart' as gradle_utils;
 
-void main(List<String> arguments) async {
+Future<void> main(List<String> arguments) async {
   ArgResults? params;
+
   try {
     params = _argParser.parse(arguments);
   } catch (e) {
@@ -21,7 +23,15 @@ void main(List<String> arguments) async {
     exit(0);
   }
   if (params['gradle-cache'] == true) {
-    unlinkGradleCaches(isVerbose: params['verbose'] == true);
+    await gradle_utils.unlinkGradleCaches(
+      isVerbose: params['verbose'] == true,
+    );
+  }
+  if (params['pub-packages']) {
+    await flutter_utils.applyToFlutter(
+      repoPath: params['repo-address'],
+      isVerbose: false,
+    );
   }
   await gradle_repo_manager.scanAndChangeRepos(
     repoPath: params['repo-address'],
@@ -87,5 +97,12 @@ ArgParser get _argParser {
       defaultsTo: false,
       negatable: false,
       help: 'removes gradle cache directory from',
+    )
+    ..addFlag(
+      'pub-packages',
+      abbr: 'p',
+      defaultsTo: false,
+      negatable: false,
+      help: 'finds flutter sdk path and adds desired repo address to all pub/flutter packages gradle files.',
     );
 }
