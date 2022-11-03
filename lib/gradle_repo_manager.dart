@@ -32,7 +32,10 @@ Future<void> scanAndChangeRepos({
   final endTime = DateTime.now().millisecondsSinceEpoch;
   final totalDur = endTime - startTime;
 
-  print('scanned `$totalCounter` files, added repo to `$doneCount` files, in ${totalDur}ms');
+  print(
+    //
+    'scanned `$totalCounter` files, added repo to `$doneCount` files, in ${totalDur}ms',
+  );
 }
 
 Stream<File> scanForFiles({
@@ -68,7 +71,12 @@ Future<bool> setRepo({
   final oldValue = sourceFile.readAsStringSync();
   final repoStartingPoint = RegExp(r'repositories\s*{');
   if (!oldValue.contains(repoStartingPoint)) {
-    if (isVerbose) print('cannot find any repository entry in `${sourceFile.path}` <it isn\'t an error>');
+    if (isVerbose) {
+      print(
+        //
+        'cannot find any repository entry in `${sourceFile.path}` <it isn\'t an error>',
+      );
+    }
     return false;
   } else if (oldValue.contains(repoAddress)) {
     if (isVerbose) print('repo already existed in `${sourceFile.path}`');

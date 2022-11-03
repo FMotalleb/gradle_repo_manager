@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:gradle_repo_manager/flutter_utils.dart' as flutter_utils;
-import 'package:gradle_repo_manager/gradle_repo_manager.dart' as gradle_repo_manager;
+import 'package:gradle_repo_manager/gradle_repo_manager.dart' //
+    as gradle_repo_manager;
 import 'package:gradle_repo_manager/gradle_utils.dart' as gradle_utils;
 
 Future<void> main(List<String> arguments) async {
@@ -66,7 +67,10 @@ ArgParser get _argParser {
       valueHelp: 'must be a valid directory',
       callback: (p0) {
         if (p0 == null || !Directory(p0).existsSync()) {
-          print('please enter correct directory, given value ($p0) is not acceptable');
+          print(
+            //
+            'please enter correct directory, given value ($p0) is not acceptable',
+          );
           exit(1);
         }
       },
@@ -103,6 +107,7 @@ ArgParser get _argParser {
       abbr: 'p',
       defaultsTo: false,
       negatable: false,
-      help: 'finds flutter sdk path and adds desired repo address to all pub/flutter packages gradle files.',
+      help: //
+          'finds flutter sdk path and adds desired repo address to all pub/flutter packages gradle files.',
     );
 }

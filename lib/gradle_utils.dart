@@ -31,7 +31,10 @@ export HOME=/home/<Your Username>
       cachesLocation = join(usersDir, '.gradle/caches');
       break;
     default:
-      throw UnimplementedError('removing caches of gradle is not supported in your os ($os)');
+      throw UnimplementedError(
+        //
+        'removing caches of gradle is not supported in your os ($os)',
+      );
   }
   if (isVerbose) {
     print('detected gradle caches location at `$cachesLocation`.');
