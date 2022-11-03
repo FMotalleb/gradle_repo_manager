@@ -1,3 +1,7 @@
+## 2.1.0
+
+- (Release) stable release
+
 ## 2.0.3
 
 - (Feat) now can detect flutter sdk path

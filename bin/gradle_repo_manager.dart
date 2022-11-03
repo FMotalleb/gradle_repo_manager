@@ -34,11 +34,15 @@ Future<void> main(List<String> arguments) async {
       isVerbose: false,
     );
   }
-  await gradle_repo_manager.scanAndChangeRepos(
-    repoPath: params['repo-address'],
-    workingDirectory: params['working-directory'],
-    isVerbose: params['verbose'] == true,
-  );
+  try {
+    await gradle_repo_manager.scanAndChangeRepos(
+      repoPath: params['repo-address'],
+      workingDirectory: params['working-directory'],
+      isVerbose: params['verbose'] == true,
+    );
+  } on Exception catch (e) {
+    print(e);
+  }
 }
 
 ArgParser get _argParser {
