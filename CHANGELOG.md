@@ -1,4 +1,4 @@
-## 2.2.0
+## 2.2.0+0
 
 - (Feat) added option to run dart command with custom host and storage urls
 
