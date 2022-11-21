@@ -1,3 +1,7 @@
+## 2.2.0
+
+- (Feat) added option to run dart command with custom host and storage urls
+
 ## 2.1.0
 
 - (Release) stable release

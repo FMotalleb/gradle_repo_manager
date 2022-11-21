@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:args/args.dart';
+import 'package:gradle_repo_manager/command_line_tools.dart';
 import 'package:gradle_repo_manager/flutter_utils.dart' as flutter_utils;
 import 'package:gradle_repo_manager/gradle_repo_manager.dart' //
     as gradle_repo_manager;
@@ -18,8 +19,36 @@ Future<void> main(List<String> arguments) async {
     }
     exit(1);
   }
+  cli.setVerbose(params['verbose'] == true);
+  final givenCommand = params.command;
+  if (givenCommand != null) {
+    switch (givenCommand.name) {
+      case 'dart-cmd':
+        final command = (givenCommand['command'] ?? '').toString();
+        final storageAddress = (givenCommand['flutter-storage-address'] ?? '').toString();
+        final pubHostedUrl = (givenCommand['pub-hosted-url'] ?? '').toString();
+
+        if (command.isEmpty) {
+          exitWithMessage('please provide command\n${_pubArgsParser.usage}');
+        }
+        await cli.runTaskInTerminal(
+          name: 'dart command',
+          command: command,
+          arguments: [],
+          environment: {
+            ...Platform.environment,
+            'PUB_HOSTED_URL': pubHostedUrl,
+            'FLUTTER_STORAGE_BASE_URL': storageAddress
+          },
+        );
+        break;
+      default:
+    }
+  }
   if (params['help'] == true) {
     print(_argParser.usage);
+    print('using `dart-cmd` you can pass a command to run using custom hosts');
+    print(_pubArgsParser.usage);
     exit(0);
   }
   if (params['gradle-cache'] == true) {
@@ -42,6 +71,11 @@ Future<void> main(List<String> arguments) async {
   } on Exception catch (e) {
     print(e);
   }
+}
+
+Never exitWithMessage(String message, [int code = 1]) {
+  cli.printToConsole(message);
+  exit(code);
 }
 
 ArgParser get _argParser {
@@ -112,5 +146,29 @@ ArgParser get _argParser {
       negatable: false,
       help: //
           'finds flutter sdk path and adds desired repo address to all pub/flutter packages gradle files.',
+    )
+    ..addCommand(
+      'dart-cmd',
+      _pubArgsParser,
     );
 }
+
+ArgParser get _pubArgsParser => ArgParser()
+  ..addOption(
+    'command',
+    abbr: 'c',
+    help: 'command that will be ran using custom storage and pub address',
+    valueHelp: 'add `"`s before and after command',
+  )
+  ..addOption(
+    'flutter-storage-address',
+    abbr: 's',
+    defaultsTo: 'https://storage.flutter-io.cn',
+    help: 'set default location for flutter storage',
+  )
+  ..addOption(
+    'pub-hosted-url',
+    abbr: 'p',
+    defaultsTo: 'https://pub.flutter-io.cn',
+    help: 'set default url for pub packages lookup',
+  );
