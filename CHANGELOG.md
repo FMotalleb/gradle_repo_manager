@@ -1,3 +1,7 @@
+## 2.2.1+0
+
+- (Feat) added ability to set custom environments for dart-cmd
+
 ## 2.2.0+0
 
 - (Feat) added option to run dart command with custom host and storage urls
