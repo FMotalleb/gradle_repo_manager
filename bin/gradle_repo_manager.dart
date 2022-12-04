@@ -27,10 +27,11 @@ Future<void> main(List<String> arguments) async {
         final command = (givenCommand['command'] ?? '').toString();
         final storageAddress = (givenCommand['flutter-storage-address'] ?? '').toString();
         final pubHostedUrl = (givenCommand['pub-hosted-url'] ?? '').toString();
-
+        final extraEnvs = List<String>.from(givenCommand['extra-env'] ?? []);
         if (command.isEmpty) {
           exitWithMessage('please provide command\n${_pubArgsParser.usage}');
         }
+
         await cli.runTaskInTerminal(
           name: 'dart command',
           command: command,
@@ -38,7 +39,8 @@ Future<void> main(List<String> arguments) async {
           environment: {
             ...Platform.environment,
             'PUB_HOSTED_URL': pubHostedUrl,
-            'FLUTTER_STORAGE_BASE_URL': storageAddress
+            'FLUTTER_STORAGE_BASE_URL': storageAddress,
+            ...createEnvFromArgs(extraEnvs),
           },
         );
         break;
@@ -171,4 +173,26 @@ ArgParser get _pubArgsParser => ArgParser()
     abbr: 'p',
     defaultsTo: 'https://pub.flutter-io.cn',
     help: 'set default url for pub packages lookup',
+  )
+  ..addMultiOption(
+    'extra-env',
+    abbr: 'e',
+    defaultsTo: [],
+    help: 'extra environments table. format must be `<ENVIRONMENT KEY>=<VALUE>` and supports multiple values',
   );
+
+Map<String, String> createEnvFromArgs(List<String> args) {
+  return Map.fromEntries(generateEnv(args));
+}
+
+Iterable<MapEntry<String, String>> generateEnv(List<String> args) sync* {
+  for (final i in args) {
+    final arr = i.split('=');
+
+    if (arr.length == 2) {
+      yield MapEntry(arr.first, arr.last);
+    } else {
+      cli.printToConsole('given env $i is not a `<Key>=<Value>`');
+    }
+  }
+}
