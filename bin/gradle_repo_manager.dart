@@ -25,7 +25,8 @@ Future<void> main(List<String> arguments) async {
     switch (givenCommand.name) {
       case 'dart-cmd':
         final command = (givenCommand['command'] ?? '').toString();
-        final storageAddress = (givenCommand['flutter-storage-address'] ?? '').toString();
+        final storageAddress =
+            (givenCommand['flutter-storage-address'] ?? '').toString();
         final pubHostedUrl = (givenCommand['pub-hosted-url'] ?? '').toString();
         final extraEnvs = List<String>.from(givenCommand['extra-env'] ?? []);
         if (command.isEmpty) {
@@ -178,7 +179,8 @@ ArgParser get _pubArgsParser => ArgParser()
     'extra-env',
     abbr: 'e',
     defaultsTo: [],
-    help: 'extra environments table. format must be `<ENVIRONMENT KEY>=<VALUE>` and supports multiple values',
+    help:
+        'extra environments table. format must be `<ENVIRONMENT KEY>=<VALUE>` and supports multiple values',
   );
 
 Map<String, String> createEnvFromArgs(List<String> args) {
