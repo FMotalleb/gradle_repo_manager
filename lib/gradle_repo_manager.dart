@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:path/path.dart' as path;
 
 Future<void> scanAndChangeRepos({
   required String repoPath,
   required String workingDirectory,
   required bool isVerbose,
+  required omitFlag,
 }) async {
   final workingDir = Directory(workingDirectory);
   final scannerRegex = RegExp(r'\.gradle$');
@@ -22,11 +24,20 @@ Future<void> scanAndChangeRepos({
     namePattern: scannerRegex,
   )) {
     totalCounter++;
-    final result = await setRepo(
-      sourceFile: i,
-      repoAddress: repoPath,
-      isVerbose: isVerbose,
-    );
+    bool result;
+    if (omitFlag) {
+      result = await removeRepo(
+        sourceFile: i,
+        repoAddress: repoPath,
+        isVerbose: isVerbose,
+      );
+    } else {
+      result = await setRepo(
+        sourceFile: i,
+        repoAddress: repoPath,
+        isVerbose: isVerbose,
+      );
+    }
     doneCount += result ? 1 : 0;
   }
   final endTime = DateTime.now().millisecondsSinceEpoch;
@@ -87,5 +98,30 @@ repositories {
     sourceFile.writeAsStringSync(newVal);
     if (isVerbose) print('repo added to `${sourceFile.path}`');
     return true;
+  }
+}
+
+Future<bool> removeRepo({
+  required File sourceFile,
+  required String repoAddress,
+  required bool isVerbose,
+}) async {
+  final repo = 'maven { url \'$repoAddress\' }';
+  final sfStr = sourceFile.readAsStringSync();
+  final repoStartingPoint = RegExp(r'repositories\s*{');
+  if (!sfStr.contains(repoStartingPoint)) {
+    if (isVerbose) {
+      print(
+        'cannot find any repository entry in `${sourceFile.path}` <it isn\'t an error>',
+      );
+    }
+    return false;
+  } else if (sfStr.contains(repoAddress)) {
+    final newVal = sfStr.replaceAll(repo, '');
+    if (isVerbose) print('removed repo from `${sourceFile.path}`');
+    sourceFile.writeAsStringSync(newVal);
+    return true;
+  } else {
+    return false;
   }
 }

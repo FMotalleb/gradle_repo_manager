@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:args/args.dart';
 import 'package:gradle_repo_manager/command_line_tools.dart';
 import 'package:gradle_repo_manager/flutter_utils.dart' as flutter_utils;
@@ -70,6 +71,7 @@ Future<void> main(List<String> arguments) async {
       repoPath: params['repo-address'],
       workingDirectory: params['working-directory'],
       isVerbose: params['verbose'] == true,
+      omitFlag: params['omit'],
     );
   } on Exception catch (e) {
     print(e);
@@ -153,7 +155,12 @@ ArgParser get _argParser {
     ..addCommand(
       'dart-cmd',
       _pubArgsParser,
-    );
+    )
+    ..addFlag('omit',
+        abbr: 'o',
+        defaultsTo: false,
+        negatable: false,
+        help: 'removes repo instead of adding');
 }
 
 ArgParser get _pubArgsParser => ArgParser()
