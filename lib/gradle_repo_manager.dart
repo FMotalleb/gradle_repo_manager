@@ -33,8 +33,7 @@ Future<void> scanAndChangeRepos({
   final totalDur = endTime - startTime;
 
   print(
-    //
-    'scanned `$totalCounter` files, added repo to `$doneCount` files, in ${totalDur}ms',
+    'scanned `$totalCounter` file(s), added repo to `$doneCount` file(s), in ${totalDur}ms.',
   );
 }
 
@@ -79,12 +78,12 @@ Future<bool> setRepo({
     }
     return false;
   } else if (oldValue.contains(repoAddress)) {
-    if (isVerbose) print('repo already existed in `${sourceFile.path}`');
+    if (isVerbose) print('repo already exists in `${sourceFile.path}`');
     return false;
   } else {
     final newVal = oldValue.replaceAll(repoStartingPoint, '''
-repositories { 
-$repo''');
+repositories {
+        $repo''');
     sourceFile.writeAsStringSync(newVal);
     if (isVerbose) print('repo added to `${sourceFile.path}`');
     return true;
