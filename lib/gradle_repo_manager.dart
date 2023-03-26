@@ -24,7 +24,7 @@ Future<void> scanAndChangeRepos({
     namePattern: scannerRegex,
   )) {
     totalCounter++;
-    bool result;
+    final bool result;
     if (omitFlag) {
       result = await removeRepo(
         sourceFile: i,
