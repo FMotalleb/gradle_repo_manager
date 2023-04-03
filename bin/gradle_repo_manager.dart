@@ -30,7 +30,9 @@ Future<void> main(List<String> arguments) async {
       default:
         print('unknown command: ${givenCommand.name}');
         print(_argParser.usage);
-        print('using `dart-cmd` you can pass a command to run using custom hosts');
+        print(
+          'using `dart-cmd` you can pass a command to run using custom hosts',
+        );
         print(_pubArgsParser.usage);
         exit(69);
     }
@@ -41,7 +43,8 @@ Future<void> main(List<String> arguments) async {
 
 Future<void> _dartCmd(ArgResults givenCommand) async {
   final command = (givenCommand['command'] ?? '').toString();
-  final storageAddress = (givenCommand['flutter-storage-address'] ?? '').toString();
+  final storageAddress = //
+      (givenCommand['flutter-storage-address'] ?? '').toString();
   final pubHostedUrl = (givenCommand['pub-hosted-url'] ?? '').toString();
   final extraEnvs = List<String>.from(givenCommand['extra-env'] ?? []);
   if (command.isEmpty) {
@@ -169,7 +172,13 @@ ArgParser get _argParser {
       'dart-cmd',
       _pubArgsParser,
     )
-    ..addFlag('omit', abbr: 'o', defaultsTo: false, negatable: false, help: 'removes repo instead of adding');
+    ..addFlag(
+      'omit',
+      abbr: 'o',
+      defaultsTo: false,
+      negatable: false,
+      help: 'removes repo instead of adding',
+    );
 }
 
 ArgParser get _pubArgsParser => ArgParser()
@@ -195,7 +204,8 @@ ArgParser get _pubArgsParser => ArgParser()
     'extra-env',
     abbr: 'e',
     defaultsTo: [],
-    help: 'extra environments table. format must be `<ENVIRONMENT KEY>=<VALUE>` and supports multiple values',
+    help: //
+        'extra environments table. format must be `<ENVIRONMENT KEY>=<VALUE>` and supports multiple values',
   );
 
 Map<String, String> createEnvFromArgs(List<String> args) {
