@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:args/args.dart';
 import 'package:gradle_repo_manager/command_line_tools.dart';
 import 'package:gradle_repo_manager/flutter_utils.dart' as flutter_utils;
@@ -25,7 +26,8 @@ Future<void> main(List<String> arguments) async {
     switch (givenCommand.name) {
       case 'dart-cmd':
         final command = (givenCommand['command'] ?? '').toString();
-        final storageAddress = (givenCommand['flutter-storage-address'] ?? '').toString();
+        final storageAddress =
+            (givenCommand['flutter-storage-address'] ?? '').toString();
         final pubHostedUrl = (givenCommand['pub-hosted-url'] ?? '').toString();
         final extraEnvs = List<String>.from(givenCommand['extra-env'] ?? []);
         if (command.isEmpty) {
@@ -69,6 +71,7 @@ Future<void> main(List<String> arguments) async {
       repoPath: params['repo-address'],
       workingDirectory: params['working-directory'],
       isVerbose: params['verbose'] == true,
+      omitFlag: params['omit'],
     );
   } on Exception catch (e) {
     print(e);
@@ -152,7 +155,12 @@ ArgParser get _argParser {
     ..addCommand(
       'dart-cmd',
       _pubArgsParser,
-    );
+    )
+    ..addFlag('omit',
+        abbr: 'o',
+        defaultsTo: false,
+        negatable: false,
+        help: 'removes repo instead of adding');
 }
 
 ArgParser get _pubArgsParser => ArgParser()
@@ -178,7 +186,8 @@ ArgParser get _pubArgsParser => ArgParser()
     'extra-env',
     abbr: 'e',
     defaultsTo: [],
-    help: 'extra environments table. format must be `<ENVIRONMENT KEY>=<VALUE>` and supports multiple values',
+    help:
+        'extra environments table. format must be `<ENVIRONMENT KEY>=<VALUE>` and supports multiple values',
   );
 
 Map<String, String> createEnvFromArgs(List<String> args) {

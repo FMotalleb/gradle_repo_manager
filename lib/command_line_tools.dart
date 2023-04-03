@@ -38,12 +38,12 @@ class HemTerminal {
   }
 
   void setVerbose(bool state) {
-    _isVerbos = state;
+    _isVerbose = state;
   }
 
-  bool _isVerbos = false;
+  bool _isVerbose = false;
   void verbosePrint(String message, {bool isError = false}) =>
-      _isVerbos ? printToConsole(message, isError: isError) : null;
+      _isVerbose ? printToConsole(message, isError: isError) : null;
   Future<io.ProcessResult> runTaskInTerminal({
     required String name,
     required String command,
