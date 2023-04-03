@@ -1,3 +1,13 @@
+## 2.3.1+0
+
+- (Feat) Omit Flag 76814ad0f680fdb729d44bac6adf180fc0c13dcc
+- (Feat) Create .github/dependabot.yml ce470e5bf4bee9fc76f221eb15c344cc4bda8336
+- (Deps) cli_utils 0.3.5 -> 0.4.0 841b7c248bda52a464884588dd7591bdf020a90d
+- (Minor, Typo) 8f21a8cf6545ee91b0c875cc65d549cd638cbd7d
+- (Minor, Typo) f507d5c58bf9307bbe11337c2ce1bbcbe6dea25a
+- (Minor, Typo) 0e865a88ab817b1059c4cbb44e712d0785628a8a
+- tanks to [Hamidreza Bayat](https://github.com/HrBDev)
+
 ## 2.2.1+0
 
 - (Feat) added ability to set custom environments for dart-cmd
