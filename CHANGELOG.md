@@ -1,3 +1,7 @@
+## 2.3.2+0
+
+- (Fix) `dart-cmd` would not interrupt work flow
+
 ## 2.3.1+1
 
 - (Refactor)
