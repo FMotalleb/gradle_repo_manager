@@ -79,6 +79,6 @@ without any thing around it
 
 ## TODO
 
-- [*] remove a repository entry
+- [x] remove a repository entry
 - [ ] change a repository to another one
 - [ ] change default pattern of maven repository
