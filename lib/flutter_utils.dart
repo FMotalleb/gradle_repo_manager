@@ -12,7 +12,7 @@ Future<void> applyToFlutter({
       isVerbose: isVerbose,
       repoPath: repoPath,
       workingDirectory: sdkDir.absolute.path,
-      omitFlag: false
+      omitFlag: false,
     );
   } on Exception catch (e) {
     print(e);
