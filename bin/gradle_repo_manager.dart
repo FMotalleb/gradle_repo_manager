@@ -79,7 +79,8 @@ Future<void> _repoUpdater(ArgResults params) async {
   if (params['pub-packages']) {
     await flutter_utils.applyToFlutter(
       repos: params['repo-address'],
-      isVerbose: false,
+      isVerbose: params['verbose'] == true,
+      omitFlag: params['omit'],
     );
   }
   try {
@@ -155,7 +156,7 @@ ArgParser get _argParser {
       defaultsTo: [
         'https://maven.aliyun.com/repository/central',
         'https://maven.aliyun.com/repository/google',
-        'https://maven.aliyun.com/repository/jcenter',
+        // 'https://maven.aliyun.com/repository/jcenter',
       ],
       help: 'new repository addresses to add to all sub gradle dirs',
     )
