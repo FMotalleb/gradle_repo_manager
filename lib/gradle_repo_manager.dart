@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:path/path.dart' as path;
+import 'package:glob/glob.dart';
+import 'package:glob/list_local_fs.dart';
 
 Future<void> scanAndChangeRepos({
   required String repoPath,
@@ -10,7 +11,7 @@ Future<void> scanAndChangeRepos({
   required omitFlag,
 }) async {
   final workingDir = Directory(workingDirectory);
-  final scannerRegex = RegExp(r'\.gradle$');
+  final globMatcher = Glob("**/*.gradle");
   if (isVerbose) {
     print('working dir: ${workingDir.absolute.path}');
     print('repo: $repoPath');
@@ -21,7 +22,7 @@ Future<void> scanAndChangeRepos({
   await for (final i in scanForFiles(
     root: workingDir,
     isVerbose: isVerbose,
-    namePattern: scannerRegex,
+    globMatcher: globMatcher,
   )) {
     totalCounter++;
     final bool result;
@@ -50,22 +51,23 @@ Future<void> scanAndChangeRepos({
 
 Stream<File> scanForFiles({
   required Directory root,
-  required Pattern namePattern,
+  required Glob globMatcher,
   required bool isVerbose,
-}) async* {
-  yield* root.list(recursive: true).where(
+}) {
+  return globMatcher
+      .list(
+    root: root.absolute.path,
+    followLinks: false,
+  )
+      .where(
     (event) {
       return event is File;
-    },
-  ).where(
-    (event) {
-      return path.basename(event.path).contains(namePattern);
     },
   ).map<File>(
     (event) {
       if (event is File) {
         if (isVerbose) print('found ${event.path}');
-        return event;
+        return event as File;
       }
       throw Exception('event is not a file actually its impossible');
     },
