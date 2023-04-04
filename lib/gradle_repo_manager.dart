@@ -8,7 +8,7 @@ Future<void> scanAndChangeRepos({
   required List<String> repos,
   required String workingDirectory,
   required bool isVerbose,
-  required omitFlag,
+  required bool omitFlag,
 }) async {
   final workingDir = Directory(workingDirectory);
   final globMatcher = Glob("**/*.gradle");

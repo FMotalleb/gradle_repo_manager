@@ -1,4 +1,4 @@
-## 2.4.1+0
+## 2.4.1+1
 
 - (Fix) Omit flag affecting pub packages
 - (Fix) removed `jcenter` repository
