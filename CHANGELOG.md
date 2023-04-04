@@ -1,3 +1,8 @@
+## 2.4.1+0
+
+- (Fix) Omit flag affecting pub packages
+- (Fix) removed `jcenter` repository
+
 ## 2.4.0+0
 
 - (Feat) The `repo-address` (alias `-r`) option has been modified to support multiple repository addresses

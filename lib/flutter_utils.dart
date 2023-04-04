@@ -5,6 +5,7 @@ import 'package:gradle_repo_manager/gradle_repo_manager.dart';
 Future<void> applyToFlutter({
   required List<String> repos,
   required bool isVerbose,
+  required bool omitFlag,
 }) async {
   try {
     final sdkDir = await _getInstallationPath();
