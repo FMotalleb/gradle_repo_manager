@@ -73,5 +73,6 @@ The `./build.bat` command can be used to build and copy the executable file to `
 ## TODO
 
 - [x] remove a repository entry
-- [ ] change a repository to another one
+- [ ] config file to store repositories, pattern and directories
+- [x] change a repository to another one (can be done using omit)
 - [ ] change default pattern of maven repository
