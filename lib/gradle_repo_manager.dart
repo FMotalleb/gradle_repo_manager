@@ -66,7 +66,9 @@ Stream<File> scanForFiles({
   ).map<File>(
     (event) {
       if (event is File) {
-        if (isVerbose) print('found ${event.path}');
+        if (isVerbose) {
+          print('found ${event.path}');
+        }
         return event as File;
       }
       throw Exception('event is not a file actually its impossible');
