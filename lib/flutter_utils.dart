@@ -3,14 +3,14 @@ import 'dart:io';
 import 'package:gradle_repo_manager/gradle_repo_manager.dart';
 
 Future<void> applyToFlutter({
-  required String repoPath,
+  required List<String> repos,
   required bool isVerbose,
 }) async {
   try {
     final sdkDir = await _getInstallationPath();
     return scanAndChangeRepos(
       isVerbose: isVerbose,
-      repoPath: repoPath,
+      repos: repos,
       workingDirectory: sdkDir.absolute.path,
       omitFlag: false,
     );

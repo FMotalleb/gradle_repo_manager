@@ -1,3 +1,8 @@
+## 2.4.0+0
+
+- (Feat) The `repo-address` (alias `-r`) option has been modified to support multiple repository addresses
+- (Minor) [Aliyun](https://developer.aliyun.com/) repositories are being used instead of [IranRepo](https://iranrepo.ir/)
+
 ## 2.3.2+0
 
 - (Fix) `dart-cmd` would not interrupt work flow

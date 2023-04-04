@@ -78,13 +78,13 @@ Future<void> _repoUpdater(ArgResults params) async {
   }
   if (params['pub-packages']) {
     await flutter_utils.applyToFlutter(
-      repoPath: params['repo-address'],
+      repos: params['repo-address'],
       isVerbose: false,
     );
   }
   try {
     await gradle_repo_manager.scanAndChangeRepos(
-      repoPath: params['repo-address'],
+      repos: params['repo-address'],
       workingDirectory: params['working-directory'],
       isVerbose: params['verbose'] == true,
       omitFlag: params['omit'],
@@ -135,23 +135,29 @@ ArgParser get _argParser {
       help: 'set root project(s) directory to search for gradle files',
       defaultsTo: Directory.current.path,
     )
-    ..addOption(
+    ..addMultiOption(
       'repo-address',
       abbr: 'r',
-      valueHelp: 'must be (http|https) url',
-      callback: (p0) {
-        final checker = Uri.tryParse(p0 ?? 'none');
-        if (checker == null) {
-          print('given value `$p0` cannot be parsed as url');
+      valueHelp: 'must be (http|https) urls',
+      callback: (items) {
+        for (final i in items) {
+          final checker = Uri.tryParse(i);
+          if (checker == null) {
+            print('given value `$i` cannot be parsed as url');
+            exit(1);
+          } else if (checker.isScheme('http') || checker.isScheme('https')) {
+            return;
+          }
+          print('given value `$i` is not valid');
           exit(1);
-        } else if (checker.isScheme('http') || checker.isScheme('https')) {
-          return;
         }
-        print('given value `$p0` is not valid');
-        exit(1);
       },
-      defaultsTo: 'https://gradle.iranrepo.ir',
-      help: 'new repository address to add to all sub gradle dirs',
+      defaultsTo: [
+        'https://maven.aliyun.com/repository/central',
+        'https://maven.aliyun.com/repository/google',
+        'https://maven.aliyun.com/repository/jcenter',
+      ],
+      help: 'new repository addresses to add to all sub gradle dirs',
     )
     ..addFlag(
       'gradle-cache',

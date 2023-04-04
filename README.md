@@ -2,53 +2,36 @@
 
 ## introduction
 
-a simple command line tool to add a repository to all gradle files under working directory
+A Simple Command Line Tool to Add a Repository to All Gradle Files Under Working Directory
 
-the reason was default gradle repos sanctions against the country I live in so android
-builds would fail due to limitations applied
+The purpose of this command line tool is to address the issue of default Gradle repositories sanctions against the country in which the user resides, resulting in Android builds failing due to limitations applied. This CLI will:
 
-1. this cli will scan all subdirectories for `*.gradle` files
-2. find repository entry in the file (some of files does not include one)
-3. add a custom repository at start of the repositories list
+1. Scan all subdirectories for `*.gradle` files.
+2. Find repository entry in the file (some of files does not include one).
+3. Add a custom repository at the start of the repositories list.
 
 ## Installing
 
-just use
+To install the Gradle Repository Manager, use the following command:
 
 ```bash
 dart pub global activate gradle_repo_manager
 ```
 
-and cli will be installed on your device
-then use
+Once the Command Line Interface (CLI) has been installed on your device, you can use it to perform various tasks.
+
+Use Following command to show help message
 
 ```bash
 repo --help
 ```
 
-to see more instructions
-
-## Building
-
-### in linux
-
-`sudo ./build.sh` will build and
-move executable file to `/usr/bin/repo`
-so you can access from every where using `repo` cli
-
-### in windows
-
-`./build.bat` will build and
-copy executable file to `C:/windows/repo.exe`
-(i have not tested this yet but it should work)
-
->so in this case you can simply use `repo` command in terminal
-
-if you want to use it for flutter packages go to
-<`flutter sdk directory`>/.pub-cache/
-and run the command there
-
 ## usage
+
+### Since version 2.4.0 and higher
+
+- The `repo-address` (alias `-r`) option has been modified to support multiple repository addresses
+- [Aliyun](https://developer.aliyun.com/) repositories are being used instead of [IranRepo](https://iranrepo.ir/)
 
 ### Since version 2.0.0 and higher
 
@@ -76,6 +59,16 @@ repo <repo line i.e.: maven {url 'https://gradle.iranrepo.ir' } >
 ```
 
 without any thing around it
+
+## Building
+
+### in linux
+
+Executing `sudo ./build.sh` will build and move the executable file to `/usr/bin/repo`, allowing users to access it from any location using the `repo` command line interface (CLI).
+
+### in windows
+
+The `./build.bat` command can be used to build and copy the executable file to `C:/windows/repo.exe`. This has not been tested yet, but it should work. To use this for Flutter packages, navigate to the `flutter sdk directory`/.pub-cache/ and run the command there.
 
 ## TODO
 

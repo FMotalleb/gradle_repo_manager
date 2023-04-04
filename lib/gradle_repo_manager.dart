@@ -5,48 +5,51 @@ import 'package:glob/glob.dart';
 import 'package:glob/list_local_fs.dart';
 
 Future<void> scanAndChangeRepos({
-  required String repoPath,
+  required List<String> repos,
   required String workingDirectory,
   required bool isVerbose,
   required omitFlag,
 }) async {
   final workingDir = Directory(workingDirectory);
   final globMatcher = Glob("**/*.gradle");
-  if (isVerbose) {
-    print('working dir: ${workingDir.absolute.path}');
-    print('repo: $repoPath');
-  }
-  final startTime = DateTime.now().millisecondsSinceEpoch;
-  int totalCounter = 0;
-  int doneCount = 0;
-  await for (final i in scanForFiles(
-    root: workingDir,
-    isVerbose: isVerbose,
-    globMatcher: globMatcher,
-  )) {
-    totalCounter++;
-    final bool result;
-    if (omitFlag) {
-      result = await removeRepo(
-        sourceFile: i,
-        repoAddress: repoPath,
-        isVerbose: isVerbose,
-      );
-    } else {
-      result = await setRepo(
-        sourceFile: i,
-        repoAddress: repoPath,
-        isVerbose: isVerbose,
-      );
-    }
-    doneCount += result ? 1 : 0;
-  }
-  final endTime = DateTime.now().millisecondsSinceEpoch;
-  final totalDur = endTime - startTime;
 
-  print(
-    'scanned `$totalCounter` file(s), added repo to `$doneCount` file(s), in ${totalDur}ms.',
-  );
+  for (final repoPath in repos) {
+    if (isVerbose) {
+      print('working dir: ${workingDir.absolute.path}');
+      print('repo: $repoPath');
+    }
+    final startTime = DateTime.now().millisecondsSinceEpoch;
+    int totalCounter = 0;
+    int doneCount = 0;
+    await for (final i in scanForFiles(
+      root: workingDir,
+      isVerbose: isVerbose,
+      globMatcher: globMatcher,
+    )) {
+      totalCounter++;
+      final bool result;
+      if (omitFlag) {
+        result = await removeRepo(
+          sourceFile: i,
+          repoAddress: repoPath,
+          isVerbose: isVerbose,
+        );
+      } else {
+        result = await setRepo(
+          sourceFile: i,
+          repoAddress: repoPath,
+          isVerbose: isVerbose,
+        );
+      }
+      doneCount += result ? 1 : 0;
+    }
+    final endTime = DateTime.now().millisecondsSinceEpoch;
+    final totalDur = endTime - startTime;
+
+    print(
+      'scanned `$totalCounter` file(s), added repo to `$doneCount` file(s), in ${totalDur}ms.',
+    );
+  }
 }
 
 Stream<File> scanForFiles({
