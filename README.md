@@ -72,8 +72,17 @@ The `./build.bat` command can be used to build and copy the executable file to `
 
 ## TODO
 
-- [ ] migrate to pub cache directory change
-- [x] Remove a repository entry
-- [ ] Implement a configuration file to store repositories, patterns and directories
-- [x] Change a repository to another one (can be done using omit)
-- [x] Modify the default pattern of Maven repository
+### In Progress
+
+- [ ] Add an update command that enables self-update functionality.
+- [ ] Migrate to pub cache directory change.
+- [ ] Implement a configuration file to store repositories, patterns, and directories for easier management and customization.
+
+### Done
+
+- [x] Remove a repository entry.
+- [x] Modify the default pattern of Maven repository.
+
+### Ignored
+
+- [x] Change a repository to another one (can be done using omit).
