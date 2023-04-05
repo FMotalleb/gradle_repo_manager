@@ -1,3 +1,7 @@
+## 2.5.0+0
+
+- (Feat) added option to change pattern of repository entry using `--pattern <pattern>`
+
 ## 2.4.1+1
 
 - (Fix) Omit flag affecting pub packages
