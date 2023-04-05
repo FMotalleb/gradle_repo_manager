@@ -1,4 +1,4 @@
-## 2.5.0+0
+## 2.5.0+1
 
 - (Feat) added option to change pattern of repository entry using `--pattern <pattern>`
 
