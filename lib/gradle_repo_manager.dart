@@ -9,6 +9,7 @@ Future<void> scanAndChangeRepos({
   required String workingDirectory,
   required bool isVerbose,
   required bool omitFlag,
+  required String pattern,
 }) async {
   final workingDir = Directory(workingDirectory);
   final globMatcher = Glob("**/*.gradle");
@@ -33,12 +34,14 @@ Future<void> scanAndChangeRepos({
           sourceFile: i,
           repoAddress: repoPath,
           isVerbose: isVerbose,
+          pattern: pattern,
         );
       } else {
         result = await setRepo(
           sourceFile: i,
           repoAddress: repoPath,
           isVerbose: isVerbose,
+          pattern: pattern,
         );
       }
       doneCount += result ? 1 : 0;
@@ -83,8 +86,10 @@ Future<bool> setRepo({
   required File sourceFile,
   required String repoAddress,
   required bool isVerbose,
+  required String pattern,
 }) async {
-  final repo = 'maven { url \'$repoAddress\' }';
+  final repo = pattern.replaceAll('\${repo}', repoAddress);
+  // 'maven { url \'$repoAddress\' }';
   final oldValue = sourceFile.readAsStringSync();
   final repoStartingPoint = RegExp(r'repositories\s*{');
   if (!oldValue.contains(repoStartingPoint)) {
@@ -112,8 +117,10 @@ Future<bool> removeRepo({
   required File sourceFile,
   required String repoAddress,
   required bool isVerbose,
+  required String pattern,
 }) async {
-  final repo = 'maven { url \'$repoAddress\' }';
+  final repo = pattern.replaceAll('\${repo}', repoAddress);
+  // 'maven { url \'$repoAddress\' }';
   final sfStr = sourceFile.readAsStringSync();
   final repoStartingPoint = RegExp(r'repositories\s*{');
   if (!sfStr.contains(repoStartingPoint)) {

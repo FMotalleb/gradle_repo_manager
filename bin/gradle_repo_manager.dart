@@ -81,6 +81,7 @@ Future<void> _repoUpdater(ArgResults params) async {
       repos: params['repo-address'],
       isVerbose: params['verbose'] == true,
       omitFlag: params['omit'],
+      pattern: params['pattern'],
     );
   }
   try {
@@ -89,6 +90,7 @@ Future<void> _repoUpdater(ArgResults params) async {
       workingDirectory: params['working-directory'],
       isVerbose: params['verbose'] == true,
       omitFlag: params['omit'],
+      pattern: params['pattern'],
     );
   } on Exception catch (e) {
     print(e);
@@ -159,6 +161,25 @@ ArgParser get _argParser {
         // 'https://maven.aliyun.com/repository/jcenter',
       ],
       help: 'new repository addresses to add to all sub gradle dirs',
+    )
+    ..addOption(
+      'pattern',
+      defaultsTo: 'maven { url \'\${repo}\' }',
+      help: 'set repository entry pattern (does affect omit flag)',
+      aliases: [
+        'format',
+      ],
+      valueHelp: 'you have to use \${repo} in the pattern. this will be replaced to repository address',
+      callback: (p0) {
+        if (p0?.isNotEmpty != true) {
+          print('pattern cannot be empty');
+          exit(1);
+        }
+        if (p0!.contains('\${repo}')) {
+          print('pattern is not valid you have to use \${repo} inside pattern');
+          exit(1);
+        }
+      },
     )
     ..addFlag(
       'gradle-cache',

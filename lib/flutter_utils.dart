@@ -6,6 +6,7 @@ Future<void> applyToFlutter({
   required List<String> repos,
   required bool isVerbose,
   required bool omitFlag,
+  required String pattern,
 }) async {
   try {
     final sdkDir = await _getInstallationPath();
@@ -14,6 +15,7 @@ Future<void> applyToFlutter({
       repos: repos,
       workingDirectory: sdkDir.absolute.path,
       omitFlag: omitFlag,
+      pattern: pattern,
     );
   } on Exception catch (e) {
     print(e);
