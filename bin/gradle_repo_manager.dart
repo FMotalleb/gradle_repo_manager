@@ -170,13 +170,13 @@ ArgParser get _argParser {
         'format',
       ],
       valueHelp: //
-          'you have to use \${repo} in the pattern. this will be replaced to repository address',
+          'pattern with \${repo} inside it',
       callback: (p0) {
         if (p0?.isNotEmpty != true) {
           print('pattern cannot be empty');
           exit(1);
         }
-        if (p0!.contains('\${repo}')) {
+        if (!p0!.contains(r'${repo}')) {
           print('pattern is not valid you have to use \${repo} inside pattern');
           exit(1);
         }
