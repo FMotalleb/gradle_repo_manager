@@ -169,7 +169,8 @@ ArgParser get _argParser {
       aliases: [
         'format',
       ],
-      valueHelp: 'you have to use \${repo} in the pattern. this will be replaced to repository address',
+      valueHelp: //
+          'you have to use \${repo} in the pattern. this will be replaced to repository address',
       callback: (p0) {
         if (p0?.isNotEmpty != true) {
           print('pattern cannot be empty');
