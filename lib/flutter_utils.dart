@@ -18,7 +18,7 @@ Future<void> applyToFlutter({
         workingDirectory: directory.absolute.path,
         omitFlag: omitFlag,
         pattern: pattern,
-      );
+      ).onError((error, stackTrace) => print(error)).then((value) => null);
     }
   } on Exception catch (e) {
     print(e);

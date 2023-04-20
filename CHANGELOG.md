@@ -1,3 +1,7 @@
+## 2.6.0+0
+
+- (Feat) can detect new .pub-cache dirs (in users directory)
+
 ## 2.5.1+1
 
 - (Feat) added option to change pattern of repository entry using `--pattern <pattern>`
