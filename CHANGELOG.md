@@ -1,6 +1,7 @@
-## 2.5.0+1
+## 2.5.1+1
 
 - (Feat) added option to change pattern of repository entry using `--pattern <pattern>`
+- (Feat) added Self-Update `repo update`
 
 ## 2.4.1+1
 
