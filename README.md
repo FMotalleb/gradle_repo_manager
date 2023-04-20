@@ -75,6 +75,7 @@ The `./build.bat` command can be used to build and copy the executable file to `
 ### In Progress
 
 - [ ] Implement watch mode (--watch)
+- [ ] Refactor
 - [ ] Implement a configuration file to store repositories, patterns, and directories for easier management and customization.
 
 ### Done
