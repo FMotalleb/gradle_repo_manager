@@ -206,6 +206,10 @@ ArgParser get _argParser {
       _pubArgsParser,
     )
     ..addCommand(
+      'cmd',
+      _pubArgsParser,
+    )
+    ..addCommand(
       'update',
     )
     ..addFlag(
