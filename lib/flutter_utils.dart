@@ -12,7 +12,7 @@ Future<void> applyToFlutter({
   try {
     await for (final directory in getPubDirectories()) {
       cli.printToConsole('Found Pub Dir: ${directory.path}');
-      return scanAndChangeRepos(
+      await scanAndChangeRepos(
         isVerbose: isVerbose,
         repos: repos,
         workingDirectory: directory.absolute.path,

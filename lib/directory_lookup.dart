@@ -6,19 +6,18 @@ import 'package:glob/list_local_fs.dart';
 Stream<Directory> getPubDirectories() async* {
   yield await _getInstallationPath();
   if (Platform.isWindows) {
-    yield* Glob("C:/Users/*/.pub-cache")
-        .list()
-        .where(
-          (event) => event is Directory,
-        )
-        .cast();
+    yield* _lookup('C:/Users/*/.pub-cache');
   } else if (Platform.isLinux || Platform.isMacOS) {
-    final possibleDir = Directory('~/.pub-cache');
-    if (await possibleDir.exists()) {
-      yield possibleDir;
-    }
+    yield* _lookup('/home/*/.pub-cache');
   }
 }
+
+Stream<T> _lookup<T extends FileSystemEntity>(String pattern) => Glob(pattern)
+    .list()
+    .where(
+      (event) => event is T,
+    )
+    .cast();
 
 Future<Directory> _getInstallationPath() async {
   const pattern =
