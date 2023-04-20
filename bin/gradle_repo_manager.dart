@@ -29,7 +29,18 @@ Future<void> main(List<String> arguments) async {
         break;
       case 'update':
         await cli.runTaskInTerminal(
-            name: 'update', command: 'dart', arguments: ['pub', 'global', 'activate', 'gradle_repo_manager']);
+          name: 'update',
+          command: 'dart',
+          arguments: [
+            'pub',
+            'global',
+            'activate',
+            'gradle_repo_manager',
+          ],
+          environment: {
+            'PUB_HOSTED_URL': givenCommand['pub-hosted-url'],
+          },
+        );
         break;
       default:
         print('unknown command: ${givenCommand.name}');
@@ -210,8 +221,14 @@ ArgParser get _argParser {
       _pubArgsParser,
     )
     ..addCommand(
-      'update',
-    )
+        'update',
+        ArgParser()
+          ..addOption(
+            'pub-hosted-url',
+            abbr: 'p',
+            defaultsTo: 'https://pub.dev',
+            help: 'set default url for pub packages lookup',
+          ))
     ..addFlag(
       'omit',
       abbr: 'o',
