@@ -1,6 +1,7 @@
-import 'dart:io';
-
 import 'package:gradle_repo_manager/gradle_repo_manager.dart';
+
+import 'command_line_tools.dart';
+import 'directory_lookup.dart';
 
 Future<void> applyToFlutter({
   required List<String> repos,
@@ -9,41 +10,17 @@ Future<void> applyToFlutter({
   required String pattern,
 }) async {
   try {
-    final sdkDir = await _getInstallationPath();
-    return scanAndChangeRepos(
-      isVerbose: isVerbose,
-      repos: repos,
-      workingDirectory: sdkDir.absolute.path,
-      omitFlag: omitFlag,
-      pattern: pattern,
-    );
+    await for (final directory in getPubDirectories()) {
+      cli.printToConsole('Found Pub Dir: ${directory.path}');
+      return scanAndChangeRepos(
+        isVerbose: isVerbose,
+        repos: repos,
+        workingDirectory: directory.absolute.path,
+        omitFlag: omitFlag,
+        pattern: pattern,
+      );
+    }
   } on Exception catch (e) {
     print(e);
   }
-}
-
-Future<Directory> _getInstallationPath() async {
-  const pattern =
-      r'Flutter\sversion\s(?<version>[^\s]+)\son\schannel\s(?<channelName>[^\s]*)\sat\s(?<installDir>[^\n]*)';
-  final matcher = RegExp(pattern);
-  final doctorProcess = await Process.start(
-    'flutter',
-    ['doctor', '-v'],
-    runInShell: true,
-    includeParentEnvironment: true,
-    mode: ProcessStartMode.normal,
-  );
-  await for (final out in doctorProcess.stdout) {
-    final outputStr = String.fromCharCodes(out);
-    if (matcher.hasMatch(outputStr)) {
-      final result = matcher.firstMatch(outputStr);
-      final dir = result?.namedGroup('installDir');
-      if (dir == null || !Directory(dir).existsSync()) {
-        throw Exception('Cannot find flutter sdk path.');
-      }
-      doctorProcess.kill();
-      return Directory(dir);
-    }
-  }
-  throw Exception('Cannot find flutter sdk path.');
 }
