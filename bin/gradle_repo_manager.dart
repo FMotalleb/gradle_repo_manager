@@ -27,6 +27,10 @@ Future<void> main(List<String> arguments) async {
       case 'dart-cmd':
         await _dartCmd(givenCommand);
         break;
+      case 'update':
+        await cli.runTaskInTerminal(
+            name: 'update', command: 'dart', arguments: ['pub', 'global', 'activate', 'gradle_repo_manager']);
+        break;
       default:
         print('unknown command: ${givenCommand.name}');
         print(_argParser.usage);
@@ -200,6 +204,9 @@ ArgParser get _argParser {
     ..addCommand(
       'dart-cmd',
       _pubArgsParser,
+    )
+    ..addCommand(
+      'update',
     )
     ..addFlag(
       'omit',
