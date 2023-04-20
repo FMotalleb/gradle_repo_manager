@@ -1,6 +1,6 @@
 # Gradle Repository Manager
 
-## introduction
+## Introduction
 
 A Simple Command Line Tool to Add a Repository to All Gradle Files Under Working Directory
 
@@ -26,7 +26,7 @@ Use Following command to show help message
 repo --help
 ```
 
-## usage
+## Usage
 
 ### Since version 2.4.0 and higher
 
