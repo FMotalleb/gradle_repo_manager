@@ -1,6 +1,4 @@
 import 'package:gradle_repo_manager/gradle_repo_manager.dart';
-import 'package:gradle_repo_manager/watcher.dart';
-
 import 'command_line_tools.dart';
 import 'directory_lookup.dart';
 
