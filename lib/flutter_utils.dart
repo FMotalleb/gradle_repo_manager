@@ -1,4 +1,5 @@
 import 'package:gradle_repo_manager/gradle_repo_manager.dart';
+import 'package:gradle_repo_manager/watcher.dart';
 
 import 'command_line_tools.dart';
 import 'directory_lookup.dart';
@@ -7,6 +8,7 @@ Future<void> applyToFlutter({
   required List<String> repos,
   required bool isVerbose,
   required bool omitFlag,
+  required bool watch,
   required String pattern,
 }) async {
   try {
@@ -18,6 +20,7 @@ Future<void> applyToFlutter({
         workingDirectory: directory.absolute.path,
         omitFlag: omitFlag,
         pattern: pattern,
+        watch: watch,
       ).onError((error, stackTrace) => print(error)).then((value) => null);
     }
   } on Exception catch (e) {

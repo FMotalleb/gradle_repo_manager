@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:glob/glob.dart';
 import 'package:glob/list_local_fs.dart';
+import 'package:gradle_repo_manager/watcher.dart';
 
 Future<void> scanAndChangeRepos({
   required List<String> repos,
@@ -10,8 +11,18 @@ Future<void> scanAndChangeRepos({
   required bool isVerbose,
   required bool omitFlag,
   required String pattern,
+  required bool watch,
 }) async {
   final workingDir = Directory(workingDirectory);
+  if (watch) {
+    watchDirectory(
+      workingDir,
+      omitFlag: omitFlag,
+      repos: repos,
+      isVerbose: isVerbose,
+      pattern: pattern,
+    );
+  }
   final globMatcher = Glob("**/*.gradle");
 
   for (final repoPath in repos) {
@@ -120,7 +131,6 @@ Future<bool> removeRepo({
   required String pattern,
 }) async {
   final repo = pattern.replaceAll('\${repo}', repoAddress);
-  // 'maven { url \'$repoAddress\' }';
   final sfStr = sourceFile.readAsStringSync();
   final repoStartingPoint = RegExp(r'repositories\s*{');
   if (!sfStr.contains(repoStartingPoint)) {

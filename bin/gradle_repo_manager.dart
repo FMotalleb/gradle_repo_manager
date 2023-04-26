@@ -97,6 +97,7 @@ Future<void> _repoUpdater(ArgResults params) async {
       isVerbose: params['verbose'] == true,
       omitFlag: params['omit'],
       pattern: params['pattern'],
+      watch: params['watch'],
     );
   }
   try {
@@ -106,6 +107,7 @@ Future<void> _repoUpdater(ArgResults params) async {
       isVerbose: params['verbose'] == true,
       omitFlag: params['omit'],
       pattern: params['pattern'],
+      watch: params['watch'],
     );
   } on Exception catch (e) {
     print(e);
@@ -211,6 +213,14 @@ ArgParser get _argParser {
       negatable: false,
       help: //
           'finds flutter sdk path and adds desired repo address to all pub/flutter packages gradle files.',
+    )
+    ..addFlag(
+      'watch',
+      abbr: 'w',
+      defaultsTo: false,
+      negatable: false,
+      help: //
+          'watches for file changes and update repositories when found new `.gradle` files.',
     )
     ..addCommand(
       'dart-cmd',
