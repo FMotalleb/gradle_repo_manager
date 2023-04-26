@@ -1,3 +1,7 @@
+## 2.7.0+0
+
+- (Feat) added watch mode `--watch(-w)`
+
 ## 2.6.0+0
 
 - (Feat) can detect new .pub-cache dirs (in users directory)
