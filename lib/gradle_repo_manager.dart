@@ -23,7 +23,7 @@ Future<void> scanAndChangeRepos({
       pattern: pattern,
     );
   }
-  final globMatcher = Glob("**/android/**/*.gradle");
+  final globMatcher = Glob("**/*.gradle");
 
   for (final repoPath in repos) {
     if (isVerbose) {
