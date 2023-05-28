@@ -1,27 +1,28 @@
 import 'package:gradle_repo_manager/gradle_repo_manager.dart';
-import 'command_line_tools.dart';
+import 'package:logging/logging.dart';
 import 'directory_lookup.dart';
 
+final _logger = Logger('FlutterUtils');
 Future<void> applyToFlutter({
   required List<String> repos,
-  required bool isVerbose,
   required bool omitFlag,
   required bool watch,
   required String pattern,
 }) async {
   try {
     await for (final directory in getPubDirectories()) {
-      cli.printToConsole('Found Pub Dir: ${directory.path}');
+      _logger.config('Found Pub Dir: ${directory.path}');
       await scanAndChangeRepos(
-        isVerbose: isVerbose,
         repos: repos,
         workingDirectory: directory.absolute.path,
         omitFlag: omitFlag,
         pattern: pattern,
         watch: watch,
-      ).onError((error, stackTrace) => print(error)).then((value) => null);
+      ).onError(
+        (error, stackTrace) => _logger.severe(error),
+      );
     }
-  } on Exception catch (e) {
-    print(e);
+  } on Exception catch (e, st) {
+    _logger.shout(e, e, st);
   }
 }

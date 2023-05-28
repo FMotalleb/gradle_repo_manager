@@ -6,21 +6,63 @@ import 'package:gradle_repo_manager/flutter_utils.dart' as flutter_utils;
 import 'package:gradle_repo_manager/gradle_repo_manager.dart' //
     as gradle_repo_manager;
 import 'package:gradle_repo_manager/gradle_utils.dart' as gradle_utils;
+import 'package:hemend_logger/hemend_logger.dart';
+import 'package:logging/logging.dart';
 
+final _logger = Logger('CLI');
 Future<void> main(List<String> arguments) async {
   ArgResults? params;
-
+  final rootLogger = Logger.root;
+  rootLogger.level = Level.FINER;
+  final manager = HemendLogger.defaultLogger(rootLogger);
+  manager.addListener(
+    AnsiLoggerProd(
+      logLevel: rootLogger.level.value,
+      decoration: [
+        ansiLogMessageColorDecorator(),
+        timeLogDecorator(
+          wrapper: (time) {
+            final begin = AnsiColor.MAGENTA('<');
+            final mid = AnsiColor.GREEN_BRIGHT(time);
+            final end = AnsiColor.MAGENTA('>');
+            return '$begin$mid$end';
+          },
+        ),
+      ],
+    ),
+  );
   try {
     params = _argParser.parse(arguments);
+    if (params['verbose'] == true) {
+      rootLogger.level = Level.ALL;
+      manager.dispose();
+      HemendLogger.defaultLogger(rootLogger).addListener(
+        AnsiLoggerProd(
+          logLevel: rootLogger.level.value,
+          decoration: [
+            ansiLogMessageColorDecorator(),
+            timeLogDecorator(
+              wrapper: (time) {
+                final begin = AnsiColor.MAGENTA('<');
+                final mid = AnsiColor.GREEN_BRIGHT(time);
+                final end = AnsiColor.MAGENTA('>');
+                return '$begin$mid$end';
+              },
+            ),
+          ],
+        ),
+      );
+    }
   } catch (e) {
     if (e is FormatException) {
-      print(e.message);
+      _logger.shout(e);
     } else {
-      print('unknown exception in params $e');
+      _logger.shout('Unknown exception in params: $e');
     }
     exit(1);
   }
-  cli.setVerbose(params['verbose'] == true);
+
+  // cli.setVerbose(params['verbose'] == true);
   final givenCommand = params.command;
   if (givenCommand != null) {
     switch (givenCommand.name) {
@@ -31,6 +73,7 @@ Future<void> main(List<String> arguments) async {
         await cli.runTaskInTerminal(
           name: 'update',
           command: 'dart',
+          logger: _logger,
           arguments: [
             'pub',
             'global',
@@ -43,12 +86,12 @@ Future<void> main(List<String> arguments) async {
         );
         break;
       default:
-        print('unknown command: ${givenCommand.name}');
-        print(_argParser.usage);
-        print(
-          'using `dart-cmd` you can pass a command to run using custom hosts',
-        );
-        print(_pubArgsParser.usage);
+        _logger.shout('''
+unknown command: ${givenCommand.name}
+${_argParser.usage}
+using `dart-cmd` you can pass a command to run using custom hosts
+${_pubArgsParser.usage}
+''');
         exit(69);
     }
   } else {
@@ -70,6 +113,7 @@ Future<void> _dartCmd(ArgResults givenCommand) async {
     name: 'dart command',
     command: command,
     arguments: [],
+    logger: _logger,
     environment: {
       ...Platform.environment,
       'PUB_HOSTED_URL': pubHostedUrl,
@@ -81,20 +125,19 @@ Future<void> _dartCmd(ArgResults givenCommand) async {
 
 Future<void> _repoUpdater(ArgResults params) async {
   if (params['help'] == true) {
-    print(_argParser.usage);
-    print('using `dart-cmd` you can pass a command to run using custom hosts');
-    print(_pubArgsParser.usage);
+    _logger.config('''
+${_argParser.usage}
+using `dart-cmd` you can pass a command to run using custom hosts
+${_pubArgsParser.usage}''');
+
     exit(0);
   }
   if (params['gradle-cache'] == true) {
-    await gradle_utils.unlinkGradleCaches(
-      isVerbose: params['verbose'] == true,
-    );
+    await gradle_utils.unlinkGradleCaches();
   }
   if (params['pub-packages']) {
     await flutter_utils.applyToFlutter(
       repos: params['repo-address'],
-      isVerbose: params['verbose'] == true,
       omitFlag: params['omit'],
       pattern: params['pattern'],
       watch: params['watch'],
@@ -104,18 +147,17 @@ Future<void> _repoUpdater(ArgResults params) async {
     await gradle_repo_manager.scanAndChangeRepos(
       repos: params['repo-address'],
       workingDirectory: params['working-directory'],
-      isVerbose: params['verbose'] == true,
       omitFlag: params['omit'],
       pattern: params['pattern'],
       watch: params['watch'],
     );
   } on Exception catch (e) {
-    print(e);
+    _logger.shout(e);
   }
 }
 
 Never exitWithMessage(String message, [int code = 1]) {
-  cli.printToConsole(message);
+  _logger.severe(message);
   exit(code);
 }
 
@@ -145,11 +187,9 @@ ArgParser get _argParser {
       valueHelp: 'must be a valid directory',
       callback: (p0) {
         if (p0 == null || !Directory(p0).existsSync()) {
-          print(
-            //
+          exitWithMessage(
             'please enter correct directory, given value ($p0) is not acceptable',
           );
-          exit(1);
         }
       },
       help: 'set root project(s) directory to search for gradle files',
@@ -163,13 +203,11 @@ ArgParser get _argParser {
         for (final i in items) {
           final checker = Uri.tryParse(i);
           if (checker == null) {
-            print('given value `$i` cannot be parsed as url');
-            exit(1);
+            exitWithMessage('given value `$i` cannot be parsed as url');
           } else if (checker.isScheme('http') || checker.isScheme('https')) {
             return;
           }
-          print('given value `$i` is not valid');
-          exit(1);
+          exitWithMessage('given value `$i` is not valid');
         }
       },
       defaultsTo: [
@@ -190,12 +228,10 @@ ArgParser get _argParser {
           'pattern with \${repo} inside it',
       callback: (p0) {
         if (p0?.isNotEmpty != true) {
-          print('pattern cannot be empty');
-          exit(1);
+          exitWithMessage('pattern cannot be empty');
         }
         if (!p0!.contains(r'${repo}')) {
-          print('pattern is not valid you have to use \${repo} inside pattern');
-          exit(1);
+          exitWithMessage('pattern is not valid you have to use \${repo} inside pattern');
         }
       },
     )
@@ -286,7 +322,7 @@ Iterable<MapEntry<String, String>> generateEnv(List<String> args) sync* {
     if (arr.length == 2) {
       yield MapEntry(arr.first, arr.last);
     } else {
-      cli.printToConsole('given env $i is not a `<Key>=<Value>`');
+      _logger.severe('given env $i is not a `<Key>=<Value>`');
     }
   }
 }

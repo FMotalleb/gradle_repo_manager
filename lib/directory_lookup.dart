@@ -1,14 +1,15 @@
 import 'dart:io';
-
 import 'package:glob/glob.dart';
 import 'package:glob/list_local_fs.dart';
+import 'package:logging/logging.dart';
 
+final _logger = Logger('DirectoryLookup');
 Stream<Directory> getPubDirectories() async* {
   yield await _getInstallationPath();
   if (Platform.isWindows) {
-    yield* _lookup('C:/Users/*/.pub-cache');
+    yield* _lookup<Directory>('C:/Users/*/.pub-cache');
   } else if (Platform.isLinux || Platform.isMacOS) {
-    yield* _lookup('/home/*/.pub-cache');
+    yield* _lookup<Directory>('/home/*/.pub-cache');
   }
 }
 
@@ -36,11 +37,14 @@ Future<Directory> _getInstallationPath() async {
       final result = matcher.firstMatch(outputStr);
       final dir = result?.namedGroup('installDir');
       if (dir == null || !Directory(dir).existsSync()) {
+        _logger.severe('Cannot find flutter sdk path.');
         throw Exception('Cannot find flutter sdk path.');
       }
+      _logger.config('Flutter Directory Found: $dir');
       doctorProcess.kill();
       return Directory(dir);
     }
   }
+  _logger.severe('Cannot find flutter sdk path.');
   throw Exception('Cannot find flutter sdk path.');
 }
