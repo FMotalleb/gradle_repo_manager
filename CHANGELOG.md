@@ -1,3 +1,7 @@
+## 2.18.2
+
+* (Minor): Dependency updated
+
 ## 2.7.1+0
 
 * (Minor): logging system changed from cli_utils to (logging | hemend_logger)
