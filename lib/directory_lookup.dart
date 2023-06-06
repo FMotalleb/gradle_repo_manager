@@ -7,7 +7,7 @@ final _logger = Logger('DirectoryLookup');
 Stream<Directory> getPubDirectories() async* {
   yield await _getInstallationPath();
   if (Platform.isWindows) {
-    yield* _lookup<Directory>('C:/Users/*/AppData/Local/Pub/Cache');
+    yield* _lookup<Directory>('C:\\Users\\*\\AppData\\Local\\Pub\\Cache');
   } else if (Platform.isLinux || Platform.isMacOS) {
     yield* _lookup<Directory>('/home/*/.pub-cache');
   }
