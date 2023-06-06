@@ -1,6 +1,6 @@
 name: gradle_repo_manager
 description: simple CLI application that adds a repo to all *.gradle files in sub dirs
-version: 2.7.3+0
+version: 2.8.0+0
 repository: https://github.com/FMotalleb/gradle_repo_manager
 
 executables:

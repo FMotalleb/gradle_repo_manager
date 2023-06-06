@@ -1,3 +1,7 @@
+## 2.8.0+0
+
+* (Fix): windows cache location
+
 ## 2.7.3+0
 
 * (Minor): Dependency updated
