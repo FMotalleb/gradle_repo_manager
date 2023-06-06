@@ -1,3 +1,7 @@
+## 2.7.3+0
+
+* (Minor): Dependency updated
+
 ## 2.7.2+0
 
 * (Minor): Dependency updated
