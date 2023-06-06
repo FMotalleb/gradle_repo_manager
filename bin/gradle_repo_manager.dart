@@ -14,43 +14,20 @@ Future<void> main(List<String> arguments) async {
   ArgResults? params;
   final rootLogger = Logger.root;
   rootLogger.level = Level.FINER;
-  final manager = HemendLogger.defaultLogger(rootLogger);
-  manager.addListener(
-    AnsiLoggerProd(
-      logLevel: rootLogger.level.value,
-      decoration: [
-        ansiLogMessageColorDecorator(),
-        timeLogDecorator(
-          wrapper: (time) {
-            final begin = AnsiColor.MAGENTA('<');
-            final mid = AnsiColor.GREEN_BRIGHT(time);
-            final end = AnsiColor.MAGENTA('>');
-            return '$begin$mid$end';
-          },
-        ),
-      ],
-    ),
+  final manager = HemendLogger.defaultLogger(
+    logger: rootLogger,
   );
+
   try {
     params = _argParser.parse(arguments);
     if (params['verbose'] == true) {
+      for (final i in manager.listeners) {
+        manager.removeListener(i);
+      }
+
       rootLogger.level = Level.ALL;
-      manager.dispose();
-      HemendLogger.defaultLogger(rootLogger).addListener(
-        AnsiLoggerProd(
-          logLevel: rootLogger.level.value,
-          decoration: [
-            ansiLogMessageColorDecorator(),
-            timeLogDecorator(
-              wrapper: (time) {
-                final begin = AnsiColor.MAGENTA('<');
-                final mid = AnsiColor.GREEN_BRIGHT(time);
-                final end = AnsiColor.MAGENTA('>');
-                return '$begin$mid$end';
-              },
-            ),
-          ],
-        ),
+      HemendLogger.defaultLogger(
+        logger: rootLogger,
       );
     }
   } catch (e) {
