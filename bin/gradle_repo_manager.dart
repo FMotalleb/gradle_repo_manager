@@ -7,7 +7,6 @@ import 'package:gradle_repo_manager/gradle_repo_manager.dart' //
     as gradle_repo_manager;
 import 'package:gradle_repo_manager/gradle_utils.dart' as gradle_utils;
 import 'package:hemend_logger/hemend_logger.dart';
-import 'package:logging/logging.dart';
 
 final _logger = Logger('CLI');
 Future<void> main(List<String> arguments) async {

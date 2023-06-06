@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:glob/glob.dart';
 import 'package:glob/list_local_fs.dart';
-import 'package:logging/logging.dart';
+import 'package:hemend_logger/hemend_logger.dart';
 
 final _logger = Logger('DirectoryLookup');
 Stream<Directory> getPubDirectories() async* {

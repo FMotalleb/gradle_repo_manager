@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:logging/logging.dart';
+import 'package:hemend_logger/hemend_logger.dart';
 import 'package:path/path.dart';
 
 final _logger = Logger('Watcher');

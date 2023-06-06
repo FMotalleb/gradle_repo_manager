@@ -3,7 +3,6 @@ import 'dart:io' as io;
 import 'dart:io';
 
 import 'package:hemend_logger/hemend_logger.dart';
-import 'package:logging/logging.dart' as logging;
 
 final HemTerminal cli = HemTerminal._();
 
@@ -23,7 +22,7 @@ class HemTerminal {
     bool runInShell = true,
     Encoding? stdoutEncoding = systemEncoding,
     Encoding? stderrEncoding = systemEncoding,
-    required logging.Logger logger,
+    required Logger logger,
   }) async {
     logger.finest('running os task $name: $command ${arguments.join(' ')}');
 

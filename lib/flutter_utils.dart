@@ -1,5 +1,5 @@
 import 'package:gradle_repo_manager/gradle_repo_manager.dart';
-import 'package:logging/logging.dart';
+import 'package:hemend_logger/hemend_logger.dart';
 import 'directory_lookup.dart';
 
 final _logger = Logger('FlutterUtils');
