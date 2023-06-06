@@ -15,6 +15,7 @@ Future<void> main(List<String> arguments) async {
   rootLogger.level = Level.FINER;
   final manager = HemendLogger.defaultLogger(
     logger: rootLogger,
+    preferPrintOverLog: true,
   );
 
   try {
@@ -27,6 +28,7 @@ Future<void> main(List<String> arguments) async {
       rootLogger.level = Level.ALL;
       HemendLogger.defaultLogger(
         logger: rootLogger,
+        preferPrintOverLog: true,
       );
     }
   } catch (e) {
