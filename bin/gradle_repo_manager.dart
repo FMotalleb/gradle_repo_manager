@@ -115,10 +115,7 @@ ${_pubArgsParser.usage}''');
   }
   var pattern = params['pattern'];
   if(params['no-tls']==true){
-    pattern=pattern.replaceAll("\${repo}","
-    \${repo}
-    allowInsecureProtocol = true
-    ")
+    pattern=pattern.replaceAll("\${repo}'","\${repo}' allowInsecureProtocol = true");
   }
   if (params['pub-packages']) {
     await flutter_utils.applyToFlutter(
