@@ -97,7 +97,7 @@ Future<bool> setRepo({
   final oldValue = sourceFile.readAsStringSync();
   final repoStartingPoint = RegExp(r'repositories\s*{');
   if (!oldValue.contains(repoStartingPoint)) {
-    _logger.finest(
+    _logger.fine(
       'cannot find any repository entry in `${sourceFile.path}` <it isn\'t an error>',
     );
 

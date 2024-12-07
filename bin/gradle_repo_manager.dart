@@ -113,11 +113,18 @@ ${_pubArgsParser.usage}''');
   if (params['gradle-cache'] == true) {
     await gradle_utils.unlinkGradleCaches();
   }
+  var pattern = params['pattern'];
+  if(params['no-tls']==true){
+    pattern=pattern.replaceAll("\${repo}","
+    \${repo}
+    allowInsecureProtocol = true
+    ")
+  }
   if (params['pub-packages']) {
     await flutter_utils.applyToFlutter(
       repos: params['repo-address'],
       omitFlag: params['omit'],
-      pattern: params['pattern'],
+      pattern: pattern,
       watch: params['watch'],
     );
   }
@@ -126,7 +133,7 @@ ${_pubArgsParser.usage}''');
       repos: params['repo-address'],
       workingDirectory: params['working-directory'],
       omitFlag: params['omit'],
-      pattern: params['pattern'],
+      pattern: pattern,
       watch: params['watch'],
     );
   } on Exception catch (e) {
@@ -219,6 +226,12 @@ ArgParser get _argParser {
       defaultsTo: false,
       negatable: false,
       help: 'removes gradle cache directory from',
+    )
+    ..addFlag(
+      'no-tls',
+      defaultsTo: false,
+      negatable: false,
+      help: 'disable tls check for repository',
     )
     ..addFlag(
       'pub-packages',
