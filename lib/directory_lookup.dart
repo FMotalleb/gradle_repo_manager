@@ -11,7 +11,7 @@ Stream<Directory> getPubDirectories() async* {
   } else if (Platform.isLinux || Platform.isMacOS) {
     yield* _lookup<Directory>('/home/*/.pub-cache');
   }
-  yield* _lookup<Directory>('root/.pub-cache');
+  yield* _lookup<Directory>('/root/.pub-cache');
 }
 
 Stream<T> _lookup<T extends FileSystemEntity>(String pattern) => Glob(pattern)
