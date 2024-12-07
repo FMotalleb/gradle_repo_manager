@@ -1,3 +1,8 @@
+## 2.9.2+1
+
+* (Fix): now tries to loockup `.pub-cache` in `root` user of linux
+* (Feat): added `--no-tls` flag
+
 ## 2.8.2+1
 
 * (Fix): windows cache location
